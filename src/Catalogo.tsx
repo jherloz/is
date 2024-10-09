@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import './Catalogo.css';
+import ConsultaReparto from './ConsultaReparto';
 
-interface Pedido {
-  id_pedido: number;
+interface Reparto {
+  id_reparto: number;
   id_repartidor: number;
   id_cliente: number;
   estado_entrega: string;
@@ -11,13 +12,13 @@ interface Pedido {
 }
 
 const Catalogo: React.FC = () => {
-  const [pedidos, setPedidos] = useState<Pedido[]>([
-    { id_pedido: 1, id_repartidor: 101, id_cliente: 201, estado_entrega: 'En camino', codigo_entrega: 'ABC123', fecha_estimada: '2024-10-10' },
-    { id_pedido: 2, id_repartidor: 102, id_cliente: 202, estado_entrega: 'Entregado', codigo_entrega: 'DEF456', fecha_estimada: '2024-10-11' },
+  const [repartos, setRepartos] = useState<Reparto[]>([
+    { id_reparto: 1, id_repartidor: 101, id_cliente: 201, estado_entrega: 'En camino', codigo_entrega: 'ABC123', fecha_estimada: '2024-10-10' },
+    { id_reparto: 2, id_repartidor: 102, id_cliente: 202, estado_entrega: 'Entregado', codigo_entrega: 'DEF456', fecha_estimada: '2024-10-11' },
   ]);
 
-  const [nuevoPedido, setNuevoPedido] = useState<Pedido>({
-    id_pedido: 0,
+  const [nuevoReparto, setNuevoReparto] = useState<Reparto>({
+    id_reparto: 0,
     id_repartidor: 0,
     id_cliente: 0,
     estado_entrega: '',
@@ -26,17 +27,18 @@ const Catalogo: React.FC = () => {
   });
 
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
+  const [selectedReparto, setSelectedReparto] = useState<Reparto | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNuevoPedido({ ...nuevoPedido, [name]: value });
+    setNuevoReparto({ ...nuevoReparto, [name]: value });
   };
 
-  const handleAddPedido = (e: React.FormEvent) => {
+  const handleAddReparto = (e: React.FormEvent) => {
     e.preventDefault();
-    setPedidos([...pedidos, { ...nuevoPedido, id_pedido: pedidos.length + 1 }]);
-    setNuevoPedido({
-      id_pedido: 0,
+    setRepartos([...repartos, { ...nuevoReparto, id_reparto: repartos.length + 1 }]);
+    setNuevoReparto({
+      id_reparto: 0,
       id_repartidor: 0,
       id_cliente: 0,
       estado_entrega: '',
@@ -46,30 +48,42 @@ const Catalogo: React.FC = () => {
     setMostrarFormulario(false);
   };
 
+  const handleRepartoClick = (reparto: Reparto) => {
+    setSelectedReparto(reparto);
+  };
+
+  const handleCloseConsulta = () => {
+    setSelectedReparto(null);
+  };
+
+  if (selectedReparto) {
+    return <ConsultaReparto reparto={selectedReparto} onClose={handleCloseConsulta} />;
+  }
+
   return (
     <div className="catalogo-container">
-      <h2>Lista de Pedidos</h2>
+      <h2>Lista de Repartos</h2>
       <div className="contenido">
-        <div className="pedidos-list">
-          {pedidos.map((pedido) => (
-            <div key={pedido.id_pedido} className="pedido-item">
-              <p><strong>ID Pedido:</strong> {pedido.id_pedido}</p>
-              <p><strong>ID Repartidor:</strong> {pedido.id_repartidor}</p>
-              <p><strong>ID Cliente:</strong> {pedido.id_cliente}</p>
-              <p><strong>Estado de Entrega:</strong> {pedido.estado_entrega}</p>
-              <p><strong>Código de Entrega:</strong> {pedido.codigo_entrega}</p>
-              <p><strong>Fecha Estimada:</strong> {pedido.fecha_estimada}</p>
+        <div className="repartos-list">
+          {repartos.map((reparto) => (
+            <div key={reparto.id_reparto} className="reparto-item" onClick={() => handleRepartoClick(reparto)}>
+              <p><strong>ID Reparto:</strong> {reparto.id_reparto}</p>
+              <p><strong>ID Repartidor:</strong> {reparto.id_repartidor}</p>
+              <p><strong>ID Cliente:</strong> {reparto.id_cliente}</p>
+              <p><strong>Estado de Entrega:</strong> {reparto.estado_entrega}</p>
+              <p><strong>Código de Entrega:</strong> {reparto.codigo_entrega}</p>
+              <p><strong>Fecha Estimada:</strong> {reparto.fecha_estimada}</p>
             </div>
           ))}
         </div>
         {mostrarFormulario && (
-          <form onSubmit={handleAddPedido} className="nuevo-pedido-form">
-            <h3>Añadir Nuevo Pedido</h3>
+          <form onSubmit={handleAddReparto} className="nuevo-reparto-form">
+            <h3>Añadir Nuevo Reparto</h3>
             <input
               type="number"
               name="id_repartidor"
               placeholder="ID Repartidor"
-              value={nuevoPedido.id_repartidor}
+              value={nuevoReparto.id_repartidor}
               onChange={handleInputChange}
               required
             />
@@ -77,7 +91,7 @@ const Catalogo: React.FC = () => {
               type="number"
               name="id_cliente"
               placeholder="ID Cliente"
-              value={nuevoPedido.id_cliente}
+              value={nuevoReparto.id_cliente}
               onChange={handleInputChange}
               required
             />
@@ -85,7 +99,7 @@ const Catalogo: React.FC = () => {
               type="text"
               name="estado_entrega"
               placeholder="Estado de Entrega"
-              value={nuevoPedido.estado_entrega}
+              value={nuevoReparto.estado_entrega}
               onChange={handleInputChange}
               required
             />
@@ -93,7 +107,7 @@ const Catalogo: React.FC = () => {
               type="text"
               name="codigo_entrega"
               placeholder="Código de Entrega"
-              value={nuevoPedido.codigo_entrega}
+              value={nuevoReparto.codigo_entrega}
               onChange={handleInputChange}
               required
             />
@@ -101,7 +115,7 @@ const Catalogo: React.FC = () => {
               type="date"
               name="fecha_estimada"
               placeholder="Fecha Estimada"
-              value={nuevoPedido.fecha_estimada}
+              value={nuevoReparto.fecha_estimada}
               onChange={handleInputChange}
               required
             />

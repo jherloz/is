@@ -3,7 +3,7 @@
 .catalogo-container {
     width: 100%;
     max-width: none;
-    margin: 0px auto; /* Aumenta el margen superior para desplazar el catálogo hacia abajo */
+    margin: 0px auto;
     padding: 60px;
     background-color: #ffffff;
     border-radius: 10px;
@@ -19,7 +19,7 @@
     width: 100%;
   }
   
-  .pedidos-list {
+  .repartos-list {
     width: 60%;
     max-height: 600px;
     overflow-y: auto;
@@ -28,17 +28,23 @@
     align-items: center;
   }
   
-  .pedido-item {
+  .reparto-item {
     width: 100%;
     padding: 10px;
     border-bottom: 1px solid #ccc;
+    transition: border 0.3s ease, box-shadow 0.3s ease; /* Añadir transición para un efecto suave */
   }
   
-  .pedido-item p {
+  .reparto-item:hover {
+    border: 1px solid #007bff; /* Color del borde al pasar el cursor */
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Sombra para resaltar */
+  }
+  
+  .reparto-item p {
     margin: 5px 0;
   }
   
-  .nuevo-pedido-form {
+  .nuevo-reparto-form {
     width: 40%;
     margin-left: 20px;
     display: flex;
@@ -46,7 +52,7 @@
     align-items: center;
   }
   
-  .nuevo-pedido-form input {
+  .nuevo-reparto-form input {
     margin: 5px 0;
     padding: 10px;
     width: 100%;
@@ -54,7 +60,7 @@
     border-radius: 5px;
   }
   
-  .nuevo-pedido-form button {
+  .nuevo-reparto-form button {
     margin-top: 10px;
     padding: 10px 20px;
     background-color: #007bff;
@@ -64,7 +70,7 @@
     cursor: pointer;
   }
   
-  .nuevo-pedido-form button:hover {
+  .nuevo-reparto-form button:hover {
     background-color: #0056b3;
   }
   
